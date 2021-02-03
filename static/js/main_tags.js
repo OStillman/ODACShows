@@ -37,7 +37,7 @@ let GetShowsWithTag = {
     displayShows: function(shows){
         for (let i = 0; i < shows.length; i++){
             $("section.one div.show_output table tbody").append(
-                `<tr style="opacity: ${this.displayOpacity(shows[i].watching)};" class="${shows[i].id}"><td>${shows[i].name}</td><td>${this.displaySeasonEpisode(shows[i].series, shows[i].episode)}</td><td><img src='/static/shows/img/${shows[i].channel.toLowerCase()}.png' class=${this.getDisplayClass(shows[i])}></tr>`);
+                `<tr style="opacity: ${this.displayOpacity(shows[i].watching)};" class="${shows[i].id}"><td>${shows[i].name}</td><td>${this.displaySeasonEpisode(shows[i].series, shows[i].episode)}</td><td><img src='/static/img/${shows[i].channel.toLowerCase()}.png' class=${this.getDisplayClass(shows[i])}></tr>`);
         }
     },
     getDisplayClass: function(show){

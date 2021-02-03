@@ -110,7 +110,7 @@ let submit_to_search = {
         return data;
     },
     request: function(data){
-        $.when(ajaxCalls.ajaxCallData("POST", "/shows/live/search", data))
+        $.when(ajaxCalls.ajaxCallData("POST", "/ODAC/shows/live/search", data))
             .then(function(result){
                 console.info("Success");
                 console.log(result);
@@ -157,7 +157,7 @@ let addShow = {
     },
     send: function(service, evtid){
         let data = {"service": service, "evtid": evtid};
-        $.when(ajaxCalls.ajaxCallData("POST", "/shows/live", data))
+        $.when(ajaxCalls.ajaxCallData("POST", "/ODAC/shows/live", data))
             .then(function(result){
                 console.info("Success");
                 console.log(result);
@@ -180,7 +180,7 @@ let addOD = {
         let title = $("section.add .elements.od_tv h2#title").text();
         let tags = submitChecks.checkTagSelection();
         let data = {"name": title, "service": service, "tags": tags.selections, "new_tags": tags.new};
-        $.when(ajaxCalls.ajaxCallData("POST", "/shows/od", data))
+        $.when(ajaxCalls.ajaxCallData("POST", "/ODAC/shows/od", data))
             .then(function(result){
                 console.info("Success");
                 console.log(result);

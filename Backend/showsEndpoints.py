@@ -11,10 +11,10 @@ Backend import searchShows
 Backend import db as ShowsDB
 Backend import onToday
 
-shows_endpoints = Blueprint('shows_endpoints', __name__)
+endpoint_control = Blueprint('endpoint_control', __name__)
 
 #Legacy - TODO: Pull out rest of DB queries and, of course, the OD stuff
-@shows_endpoints.route('/add', methods=['GET', 'POST'])
+@endpoint_control.route('/add', methods=['GET', 'POST'])
 def add_shows():
     if request.method == 'GET':
         FetchTags = ShowsDB.FetchTags()
@@ -38,7 +38,7 @@ def add_shows():
         db.AddShow(data, tags)'''
         return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
 
-@shows_endpoints.route('/live/search', methods=['POST'])
+@endpoint_control.route('/live/search', methods=['POST'])
 def showsSearch():
     data = request.get_json(force=True)
     print(data, file=sys.stderr)
@@ -47,7 +47,7 @@ def showsSearch():
     print(show_times)
     return json.dumps(show_times), 200, {'ContentType': 'application/json'}
 
-@shows_endpoints.route('/live', methods=['POST', 'DELETE'])
+@endpoint_control.route('/live', methods=['POST', 'DELETE'])
 def liveAdd():
     if request.method == "POST":
         data = request.get_json(force=True)
@@ -73,13 +73,13 @@ def liveAdd():
         return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
 
 
-@shows_endpoints.route('/live/today')
+@endpoint_control.route('/live/today')
 def showsLiveToday():
     onToday.OnTodayController()
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
-@shows_endpoints.route("/od", methods=['POST', 'PUT', 'DELETE'])
+@endpoint_control.route("/od", methods=['POST', 'PUT', 'DELETE'])
 def odAdd():
     if request.method == "POST":
         data = request.get_json(force=True)
@@ -98,7 +98,7 @@ def odAdd():
         return json.dumps({'success': True}), 201, {'ContentType': 'application/json'}
 
 # Legacy TODO: Remove dependancy here on DELTE and PUT, move out/sort OD parts
-@shows_endpoints.route('/', methods=['GET'])
+@endpoint_control.route('/', methods=['GET'])
 def shows():
 
     # Today
