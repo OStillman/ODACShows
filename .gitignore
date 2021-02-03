@@ -1,4 +1,7 @@
-
+# My Additions
+DB/
+constants.py
+constants.yaml
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,flutter,androidstudio,android,visualstudiocode,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,flutter,androidstudio,android,visualstudiocode,gradle
 
