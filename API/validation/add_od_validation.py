@@ -11,9 +11,15 @@ class Validate_AddOD():
                 "service": {"type": "number"},
                 "watching": {"type": "string"},
                 "episode": {"type": "number"},
-                "series": {"type": "number"}
+                "series": {"type": "number"},
+                "tags":{
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                    "uniqueItems": True
+                }
             },
-            "required": ["name", "service", "watching"]
+            "required": ["name", "service", "watching", "tags"]
         }
 
     def validate_data(self):
