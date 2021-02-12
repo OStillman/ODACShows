@@ -8,12 +8,10 @@ api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 def index():
     return "ok"
 
-@api_endpoint_control.route('/OD', methods=['GET', 'POST'])
+@api_endpoint_control.route('/od', methods=['GET', 'POST'])
 def on_demand():
     if request.method ==  "POST":
-        return "Post"
+        return '', 204
     elif request.method == "GET":
-        return "Get"
-    else:
-        return "Error.."
+        return '', 204
 
