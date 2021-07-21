@@ -1,0 +1,237 @@
+html,
+body {
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #2c666e;
+    color: white;
+    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.add_item{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.parent {
+    overflow: scroll;
+    height: 100vh;
+    scroll-snap-type: mandatory;
+    scroll-snap-points-y: repeat(100vh);
+    scroll-snap-type: y mandatory;
+}
+
+section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100vw;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+
+section h1 {
+    font-size: 35px;
+    margin-bottom: 0;
+}
+
+section .elements h2 {
+    margin: 10px 0px
+}
+
+section .elements .next-button {
+    text-align: center;
+}
+
+section table {
+    text-align: center;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+section table tbody tr td {
+    padding: 5px;
+}
+
+section table tbody tr.time{
+    border-bottom: solid white;
+    font-weight: bold;
+}
+
+section table tbody tr .output{
+    padding-bottom: 5px;
+    text-align: left; 
+}
+
+section table tbody tr .output.duration span{
+    font-size: small;
+}
+
+section.three table button{
+    background-color: #49a1ad;
+    color: white;
+    border-radius: 5px;
+    border-color: #49a1ad;
+    padding: 14px 100px;
+    font-size: 15px;
+}
+
+ /* Style the tab */
+ .tab {
+    overflow: hidden;
+  }
+  
+  /* Style the buttons that are used to open the tab content */
+  .tab button {
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: #49a1ad;
+    padding: 14px 16px;
+    transition: 0.3s;
+    color: white;
+    background-color:  #49a1ad;
+    font-size: 15px;
+  }
+  
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+  } 
+
+
+img.long {
+    height: 15px;
+    width: 30px;
+}
+
+img.c4 {
+    height: 20px;
+    width: 15px;
+}
+
+section.add button{
+    background-color: #49a1ad;
+    border-radius: 5px;
+    border-color: #49a1ad;
+    color: white;
+    padding: 5px 5px;
+    font-size: 15px;
+}
+
+section.add img {
+    height: 40px;
+    width: 40px;
+}
+
+section.add .elements {
+    width: 90%;
+    font-size: 25px;
+}
+
+section.add .elements div#service_grid {
+    display: grid;
+	grid-template-columns: repeat( 3, minmax(90px, 1fr) );
+    grid-row-gap: 20px;
+}
+
+section.add .elements div#service_grid img {
+    margin: auto;
+    height: 30px !important;
+    width: 50px !important;
+}
+
+section.add .elements div#service_grid img.c4 {
+    height: 50px !important;
+    width: 50px !important;
+}
+
+section.add .elements .tags {
+    font-size: 15px;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+table tbody tr td.tags_row .tags {
+    font-size: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+section.add .elements .tags span,
+table tbody tr td.tags_row .tags,
+section.one div.tags span {
+    margin: 10px 5px;
+    background-color: #49a1ad;
+    border-radius: 5px;
+    padding: 5px 5px 5px 5px;
+    display: inline-block;
+}
+
+section.add .elements .tags span.selected::after {
+    content: ' ✓';
+}
+
+section.add .elements select,
+section.add .elements #time input,
+section.one div.edit input {
+    background-color: #2c666e;
+    color: white;
+    width: 150px;
+    border: none;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+section.one div.edit input{
+    text-align: center;
+}
+
+section.one div.tags span{
+    font-size: 25px;
+}
+
+section.one div.tags span.reset::after{
+    text-align: "right";
+    content: " X";
+}
+
+section.one .show_output table tbody img.tall{
+    width: 40px;
+    height: 40px;
+}
+
+section.one .show_output table tbody img.long{
+    width: 65px;
+    height: 25px;
+}
+
+section.three{
+    max-height: 100vh;
+    margin: auto;
+}
+
+section.three table{
+    display: inline-block;
+    width: 95vw;
+    max-height: 100vh;
+    overflow-y: scroll;
+    padding-top: 10%;
+    user-select: none;
+    table-layout: fixed;
+}
+
+section.three table th, section.three table td{
+    word-wrap: break-word;
+}
+
+section.three table th.active{
+    background-color: #254d54;
+}
+
+
