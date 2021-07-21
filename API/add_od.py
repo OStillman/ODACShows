@@ -22,6 +22,7 @@ class AddOD():
 
     def checkChannel(self):
         # Invoke Channel Check to ensure it's an OD Channel, or that it exists in the DB
+        pass
 
 
     def addODShow(self):
