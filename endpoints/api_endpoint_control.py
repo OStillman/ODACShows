@@ -29,5 +29,10 @@ def on_demand():
             response_error_code = add_show_outcome[0]
             return (response_error_msg, response_error_code)
     elif request.method == "GET":
-        return '', 204
+        searched_show = request.args.get("show")
+        if searched_show:
+            print("Specific Show Requested")
+        else:
+            print("All Shows Requested")
+        return '', 200
 
