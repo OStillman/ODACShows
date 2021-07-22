@@ -10,8 +10,12 @@ class AddOD():
         print(self.show_data)
         checkJSON_outcome = self.checkJSON()
         if checkJSON_outcome == True:
-            self.addODShow()
-            return True
+            check_channel_outcome = self.checkChannel()
+            if check_channel_outcome == True:
+                pass
+                #self.addODShow()
+            return check_channel_outcome
+            
         else:
             print(checkJSON_outcome)
             return checkJSON_outcome
@@ -21,8 +25,11 @@ class AddOD():
         return validation.validate_data()
 
     def checkChannel(self):
-        # Invoke Channel Check to ensure it's an OD Channel, or that it exists in the DB
-        pass
+        # TODO: Invoke Channel Check to ensure it's an OD Channel, or that it exists in the DB - use od_channel_validation
+        # Get channel number, search for it in the DB - does it exist? Yes - is it OD? Live/Non-Existent report back to user
+        chosen_channel = self.show_data["service"]
+        ODChannelValidation = od_channel_validation.ODChannelValidation(chosen_channel)
+        return ODChannelValidation.run_checks()
 
 
     def addODShow(self):

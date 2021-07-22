@@ -6,3 +6,14 @@ values(
     "TestODChannel",
     "OD"
 );
+
+INSERT INTO channels(
+    name,
+    type,
+    number
+)
+values(
+    "TestLiveChannel",
+    "Live",
+    560
+);

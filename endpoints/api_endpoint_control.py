@@ -25,7 +25,9 @@ def on_demand():
             return '', 201
         else:
             print(add_show_outcome)
-            return add_show_outcome
+            response_error_msg = add_show_outcome[1]
+            response_error_code = add_show_outcome[0]
+            return (response_error_msg, response_error_code)
     elif request.method == "GET":
         return '', 204
 
