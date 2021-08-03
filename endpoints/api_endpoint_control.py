@@ -2,7 +2,8 @@ from flask import render_template, request
 import json
 from flask import Blueprint
 
-from API import add_od
+from API.on_demand import add_od
+from API.on_demand import get_od
 
 api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 
@@ -29,10 +30,13 @@ def on_demand():
             response_error_code = add_show_outcome[0]
             return (response_error_msg, response_error_code)
     elif request.method == "GET":
+        response = ["", 200]
         searched_show = request.args.get("show")
         if searched_show:
             print("Specific Show Requested")
         else:
-            print("All Shows Requested")
-        return '', 200
+            RetrieveAllODShows = get_od.RetrieveAllShows()
+            all_od_shows = RetrieveAllODShows.run_retrieval()
+            response[0] = all_od_shows
+        return response[0], response[1]
 

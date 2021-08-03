@@ -68,3 +68,15 @@ class AddODShow():
             AddTag = tags.AddTag(self.DBAdd.cursor)
             # Will return the tag's row_id
             return AddTag.add_tag(tag)
+
+class GetAllOD():
+    def __init__(self):
+        self.DBActions = db_actions.DBOtherActions()
+        self.cursor = self.DBActions.cursor
+
+    def RetrieveAllShows(self):
+        all_shows = self.cursor.execute('''
+        SELECT * FROM ODShows;
+        ''').fetchall()
+        print(all_shows)
+        return all_shows

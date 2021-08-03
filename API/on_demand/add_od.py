@@ -12,8 +12,7 @@ class AddOD():
         if checkJSON_outcome == True:
             check_channel_outcome = self.checkChannel()
             if check_channel_outcome == True:
-                pass
-                #self.addODShow()
+                self.addODShow()
             return check_channel_outcome
             
         else:
