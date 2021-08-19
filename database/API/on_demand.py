@@ -69,6 +69,23 @@ class AddODShow():
             # Will return the tag's row_id
             return AddTag.add_tag(tag)
 
+
+class DeleteOD():
+    def __init__(self, show_id):
+        self.show_id = show_id
+        self.DBActions = db_actions.DBOtherActions()
+        self.cursor = self.DBActions.cursor
+
+    def DeleteShow(self):
+        print(self.show_id)
+        deletion = self.cursor.execute('''
+        DELETE FROM ODShows
+        WHERE id = ?
+        ''', (self.show_id, ))
+        self.DBActions.close_db()
+        print(deletion)
+        return deletion
+
 class GetAllOD():
     def __init__(self):
         self.DBActions = db_actions.DBOtherActions()
@@ -80,3 +97,18 @@ class GetAllOD():
         ''').fetchall()
         print(all_shows)
         return all_shows
+
+
+
+class GetSpecificOD():
+    def __init__(self, show_id):
+        self.DBActions = db_actions.DBOtherActions()
+        self.cursor = self.DBActions.cursor
+        self.show_id = show_id
+
+    def RetrieveShow(self):
+        fetched_show = self.cursor.execute('''
+        SELECT * FROM ODShows
+        WHERE id = ?;
+        ''', (self.show_id, )).fetchall()
+        return fetched_show

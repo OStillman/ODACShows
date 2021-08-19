@@ -19,3 +19,7 @@ class DBOtherActions():
     def __init__(self):
         self.db = sqlite3.connect('database/db_v1.1.1')
         self.cursor = self.db.cursor()
+
+    def close_db(self):
+        self.db.commit()
+        self.db.close()
