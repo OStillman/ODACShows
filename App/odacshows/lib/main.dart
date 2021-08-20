@@ -60,33 +60,27 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               child: Column(
                 children: <Widget>[
-                  ElevatedButton(
+                  TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/OD');
                       },
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.cyan),
                           fixedSize:
-                              MaterialStateProperty.all(Size(150.0, 100.0))),
-                      child: const Text(
-                        "On Demand Shows",
-                        style: TextStyle(color: Colors.white, fontSize: 20.0),
-                        textAlign: TextAlign.center,
+                              MaterialStateProperty.all(Size(170.0, 210.0))),
+                      child: const Image(
+                        image: AssetImage('assets/images/OD.png'),
                       )),
                   Padding(
                     padding: EdgeInsets.only(top: 5),
-                    child: ElevatedButton(
-                        onPressed: null,
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/OD');
+                        },
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.cyan),
                             fixedSize:
-                                MaterialStateProperty.all(Size(150.0, 100.0))),
-                        child: const Text(
-                          "Live Shows",
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
-                          textAlign: TextAlign.center,
+                                MaterialStateProperty.all(Size(170.0, 210.0))),
+                        child: const Image(
+                          image: AssetImage('assets/images/Live.png'),
                         )),
                   ),
                 ],
