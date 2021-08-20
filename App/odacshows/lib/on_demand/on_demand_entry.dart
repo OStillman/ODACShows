@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:odacshows/on_demand/on_demand_show.dart';
 
 import '/helpers/constants.dart';
 import 'object_factory/on_demand_shows.dart';
+import '/on_demand/on_demand_show.dart';
 
 class OnDemandEntry extends StatefulWidget {
   @override
@@ -17,8 +19,7 @@ class _OnDemandEntry extends State<OnDemandEntry> {
 
   Future<OnDemandShows> fetchODShows() async {
     OnDemandShows onDemandShows;
-    final response = await http
-        .get(Uri.parse('$base_url/ODAC/shows/api/od'));
+    final response = await http.get(Uri.parse('$base_url/ODAC/shows/api/od'));
     if (response.statusCode == 200) {
       print("Request Succeeded");
       //print(response.body);
@@ -56,8 +57,7 @@ class _OnDemandEntry extends State<OnDemandEntry> {
               if (data != null) {
                 return OutputOD(data.odShows);
                 //return Text("Works");
-              }
-              else{
+              } else {
                 return Text("No Shows?!");
               }
             } else if (snapshot.hasError) {
@@ -70,52 +70,69 @@ class _OnDemandEntry extends State<OnDemandEntry> {
         ));
   }
 
-  Widget OutputOD(all_od_shows){
+  Widget OutputOD(all_od_shows) {
     return GridView.count(
         crossAxisCount: 3,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(20),
-        children: FormatODShows(all_od_shows)
-    );
+        children: FormatODShows(all_od_shows));
   }
 
-  List<Widget> FormatODShows(all_od_shows){
+  List<Widget> FormatODShows(all_od_shows) {
     List<Widget> all_widgets = [];
-    for (var show in all_od_shows){
+    for (var show in all_od_shows) {
       Widget this_widget;
       String progress;
       String show_name = show.name;
       String watching = show.watching;
 
-      if (show.episode == 0 && show.series == 0){
+      if (show.episode == 0 && show.series == 0) {
         progress = "";
-      }
-      else{
+      } else {
         String episode = show.episode.toString();
         String series = show.series.toString();
         progress = "S$series, Ep$episode";
       }
 
-      if (watching == "Y"){
+      if (watching == "Y") {
         this_widget = Container(
             padding: const EdgeInsets.all(8),
             color: Colors.cyan[800],
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Text("$show_name", style: TextStyle(color: Colors.white)), Spacer(), Text(progress, style: TextStyle(fontWeight: FontWeight.w100, color: Colors.white),)],
-            ));
-      }
-      else{
-        this_widget = Opacity(
-          opacity: 0.4,
-          child: Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.cyan[800],
+            child: GestureDetector(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Text("Test Show", style: TextStyle(color: Colors.white)), Spacer(),],
-              )),
+                children: <Widget>[
+                  Text("$show_name", style: TextStyle(color: Colors.white)),
+                  Spacer(),
+                  Text(
+                    progress,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w100, color: Colors.white),
+                  )
+                ],
+              ),
+            ),
+        );
+      } else {
+        this_widget = Opacity(
+          opacity: 0.4,
+          child: GestureDetector(
+            onTap: () {
+              String show_id = show.id.toString();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => OnDemandShow(show_name, show_id)));
+            },
+            child: Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.cyan[800],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("$show_name", style: TextStyle(color: Colors.white)),
+                    Spacer(),
+                  ],
+                )),
+          ),
         );
       }
 
