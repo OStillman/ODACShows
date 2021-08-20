@@ -45,38 +45,47 @@ class _OnDemandEntry extends State<OnDemandEntry> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blueGrey[800],
-        appBar: AppBar(
-          title: Text("On Demand Shows"),
-        ),
-        body: FutureBuilder<OnDemandShows>(
-          future: futureODShows,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var data = snapshot.data;
-              if (data != null) {
-                return OutputOD(data.odShows);
-                //return Text("Works");
-              } else {
-                return Text("No Shows?!");
-              }
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+      backgroundColor: Colors.blueGrey[800],
+      appBar: AppBar(
+        title: Text("On Demand Shows"),
+      ),
+      body: FutureBuilder<OnDemandShows>(
+        future: futureODShows,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var data = snapshot.data;
+            if (data != null) {
+              return OutputOD(data.odShows);
+              //return Text("Works");
+            } else {
+              return Text("No Shows?!");
             }
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
 
-            // By default, show a loading spinner.
-            return DefaultLoading();
-          },
-        ));
+          // By default, show a loading spinner.
+          return DefaultLoading();
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 
   Widget OutputOD(all_od_shows) {
-    return GridView.count(
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-        padding: const EdgeInsets.all(20),
-        children: FormatODShows(all_od_shows));
+    if (all_od_shows.length == 0) {
+      return NoShows();
+    } else {
+      return GridView.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          padding: const EdgeInsets.all(20),
+          children: FormatODShows(all_od_shows));
+    }
   }
 
   List<Widget> FormatODShows(all_od_shows) {
@@ -100,27 +109,40 @@ class _OnDemandEntry extends State<OnDemandEntry> {
             padding: const EdgeInsets.all(8),
             color: Colors.cyan[800],
             child: GestureDetector(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("$show_name", style: TextStyle(color: Colors.white)),
-                  Spacer(),
-                  Text(
-                    progress,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w100, color: Colors.white),
-                  )
-                ],
-              ),
-            ),
-        );
+              onTap: () {
+                String show_id = show.id.toString();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            OnDemandShow(show_name, show_id)));
+              },
+              child: Container(
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.cyan[800],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("$show_name", style: TextStyle(color: Colors.white)),
+                      Spacer(),
+                      Text(
+                        progress,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w100, color: Colors.white),
+                      )
+                    ],
+                  )),
+            ));
       } else {
         this_widget = Opacity(
           opacity: 0.4,
           child: GestureDetector(
             onTap: () {
               String show_id = show.id.toString();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => OnDemandShow(show_name, show_id)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OnDemandShow(show_name, show_id)));
             },
             child: Container(
                 padding: const EdgeInsets.all(8),
@@ -130,6 +152,11 @@ class _OnDemandEntry extends State<OnDemandEntry> {
                   children: <Widget>[
                     Text("$show_name", style: TextStyle(color: Colors.white)),
                     Spacer(),
+                    Text(
+                      progress,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w100, color: Colors.white),
+                    )
                   ],
                 )),
           ),
@@ -138,6 +165,7 @@ class _OnDemandEntry extends State<OnDemandEntry> {
 
       all_widgets.add(this_widget);
     }
+
     return all_widgets;
   }
 
@@ -159,6 +187,24 @@ class _OnDemandEntry extends State<OnDemandEntry> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget AddButton() {
+    return FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+    );
+  }
+
+  Widget NoShows() {
+    return Center(
+      child: Container(
+          padding: const EdgeInsets.all(8),
+          width: MediaQuery.of(context).size.width,
+          color: Colors.cyan[800],
+          child:
+              Text("You Have No On Demand Shows", textAlign: TextAlign.center)),
     );
   }
 
