@@ -115,7 +115,7 @@ class _OnDemandEntry extends State<OnDemandEntry> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            OnDemandShow(show_name, show_id)));
+                            OnDemandShow_UI(show_name, show_id)));
               },
               child: Container(
                   padding: const EdgeInsets.all(8),
@@ -142,7 +142,7 @@ class _OnDemandEntry extends State<OnDemandEntry> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => OnDemandShow(show_name, show_id)));
+                      builder: (context) => OnDemandShow_UI(show_name, show_id)));
             },
             child: Container(
                 padding: const EdgeInsets.all(8),
