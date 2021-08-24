@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'on_demand/on_demand_entry.dart';
+import 'on_demand/add_od_show.dart';
 
 import 'helpers/constants.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MyHomePage(),
         '/OD': (context) => OnDemandEntry(),
+        '/OD/Add': (context) => AddODShow(),
       },
     );
   }

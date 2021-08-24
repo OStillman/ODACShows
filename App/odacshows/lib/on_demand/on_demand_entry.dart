@@ -69,7 +69,9 @@ class _OnDemandEntry extends State<OnDemandEntry> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, '/OD/Add');
+        },
         child: const Icon(Icons.add),
       ),
     );
@@ -192,7 +194,9 @@ class _OnDemandEntry extends State<OnDemandEntry> {
 
   Widget AddButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/OD/Add');
+      },
       child: const Icon(Icons.add),
     );
   }
