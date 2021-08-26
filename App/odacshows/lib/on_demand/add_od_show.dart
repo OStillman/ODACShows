@@ -11,6 +11,8 @@ import '/on_demand/on_demand_entry.dart';
 
 import '/helpers/constants.dart';
 
+import 'workers/add_od_show_worker.dart';
+
 class AddODShow extends StatefulWidget {
   @override
   _AddODShow createState() => _AddODShow();
@@ -19,13 +21,15 @@ class AddODShow extends StatefulWidget {
 class _AddODShow extends State<AddODShow> {
   int _index = 0;
   bool _watching = false;
+  bool _missing_input = false;
   final TextEditingController _show_name_controller = TextEditingController();
   final TextEditingController _show_series_controller = TextEditingController();
-  final TextEditingController _show_episode_controller = TextEditingController();
-  String _show_name = "Show?";
-  String _show_series = "?";
-  String _show_episode = "?";
-  String _watching_ui = "No";
+  final TextEditingController _show_episode_controller =
+      TextEditingController();
+  String? _show_name;
+  String? _show_series;
+  String? _show_episode;
+  String? _watching_ui = "No";
   List<bool> _completion = [false, false, false, true];
   List<String> _default_values = ["Show?", "?", "?", "?"];
 
@@ -110,6 +114,30 @@ class _AddODShow extends State<AddODShow> {
             setState(() {
               _index += 1;
             });
+          } else {
+            List<dynamic> _completion_check = _completionChecker();
+            if (_completion_check[0] == false){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("You've Missed " + _completion_check[1]),
+                ),
+              );
+            }
+            else{
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Show Added!'),
+                  content: const Text('Great! Your On Demand Show has been successfully added'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.popUntil(context, ModalRoute.withName('/OD')),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
+            }
           }
         },
         onStepTapped: (int index) {
@@ -125,7 +153,8 @@ class _AddODShow extends State<AddODShow> {
               'Add Your Show Name:',
               style: TextStyle(color: Colors.white),
             ),
-            subtitle: Text(_show_name, style: TextStyle(color: Colors.white)),
+            subtitle: Text(_textOutput(_show_name, _default_values[0]),
+                style: TextStyle(color: Colors.white)),
             content: Container(
                 alignment: Alignment.centerLeft,
                 child: TextFormField(
@@ -139,7 +168,8 @@ class _AddODShow extends State<AddODShow> {
             state: _getStepState(1),
             title: Text('Add Current Series:',
                 style: TextStyle(color: Colors.white)),
-            subtitle: Text('Series $_show_series',
+            subtitle: Text(
+                'Series ' + _textOutput(_show_series, _default_values[1]),
                 style: TextStyle(color: Colors.white)),
             content: Container(
                 alignment: Alignment.centerLeft,
@@ -155,7 +185,9 @@ class _AddODShow extends State<AddODShow> {
             state: _getStepState(2),
             title: Text('Add Current Episode:',
                 style: TextStyle(color: Colors.white)),
-            subtitle: Text('Episode $_show_episode', style: TextStyle(color: Colors.white)),
+            subtitle: Text(
+                'Episode ' + _textOutput(_show_episode, _default_values[2]),
+                style: TextStyle(color: Colors.white)),
             content: Container(
                 alignment: Alignment.centerLeft,
                 child: TextFormField(
@@ -170,8 +202,9 @@ class _AddODShow extends State<AddODShow> {
             state: _getStepState(3),
             title: Text('Are you Currently Watching this Show?',
                 style: TextStyle(color: Colors.white)),
-            subtitle:
-                Text('Watching: $_watching_ui', style: TextStyle(color: Colors.white)),
+            subtitle: Text(
+                'Watching: ' + _textOutput(_watching_ui, _default_values[3]),
+                style: TextStyle(color: Colors.white)),
             content: Container(
               alignment: Alignment.centerLeft,
               child: Switch(
@@ -218,22 +251,21 @@ class _AddODShow extends State<AddODShow> {
     }
   }
 
-  String _checkInput(String input, int index) {
+  String? _checkInput(String input, int index) {
     if (input.length == 0) {
       _completion[index] = false;
-      return _default_values[index];
+      return null;
     } else {
       _completion[index] = true;
       return input;
     }
   }
 
-  String _watchingUIController(int index){
-    if (_watching){
+  String _watchingUIController(int index) {
+    if (_watching) {
       _completion[index] = true;
       return "Yes";
-    }
-    else{
+    } else {
       _completion[index] = true;
       return "No";
     }
@@ -243,5 +275,27 @@ class _AddODShow extends State<AddODShow> {
     _watching = status;
     _watching_ui = _watchingUIController(3);
     setState(() {});
+  }
+
+  String _textOutput(current_value, default_value) {
+    if (current_value == null) {
+      return default_value;
+    } else {
+      return current_value;
+    }
+  }
+
+  List<dynamic> _completionChecker() {
+    SendODShow sendODShow = SendODShow(
+        show_name: _show_name,
+        current_episode: _show_episode,
+        current_series: _show_series,
+        watching: _watching);
+    List<dynamic> _outcome = sendODShow.checkValuesExist();
+    print(_outcome);
+    if (_outcome[0]){
+      //Run the Add Script
+    }
+    return _outcome;
   }
 }
