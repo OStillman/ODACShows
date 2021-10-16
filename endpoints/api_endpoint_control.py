@@ -12,6 +12,13 @@ api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 def index():
     return "ok"
 
+@api_endpoint_control.route('/channels', methods=['GET'])
+def channels():
+    response = ["", 200]
+    if request.method == "GET":
+        response[0] = "Hello"
+    return response[0], response[1]
+
 # User Navigates to /ODAC/shows/api/od
 @api_endpoint_control.route('/od', methods=['GET', 'POST', 'DELETE'])
 def on_demand():
