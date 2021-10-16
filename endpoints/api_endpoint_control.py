@@ -13,7 +13,7 @@ api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 def index():
     return "ok"
 
-@api_endpoint_control.route('/channels', methods=['GET'])
+@api_endpoint_control.route('/channels', methods=['GET', 'POST'])
 def channels():
     #TODO: See Github for adding catch for only Live channel Retrieval
     response = ["", 200]
@@ -22,6 +22,29 @@ def channels():
         retrieved_channels = AllChannels.Retrieve()
         print(retrieved_channels)
         response[0] = (retrieved_channels)
+    elif request.method == "POST":
+        incorrect_request_data = False
+        try:
+            request_data = request.get_json(force=True)
+        except:
+            incorrect_request_data = True
+            response[0] = {"Error" : {"Message": "No Channel or Service data supplied for addition"}}
+            response[1] = 400
+        finally:
+            if not incorrect_request_data:
+                print("Request data exists")
+                AddChannel = api_channels.AddChannel(request_data)
+                channel_add_status = AddChannel.Add()
+                print(channel_add_status)
+                if channel_add_status[0] == True:
+                    if channel_add_status[1] == True:
+                        response[1] = 201
+                    else:
+                        response[1] = 400
+                        response[0] = {"Error" : {"Message": channel_add_status[2]}}
+                else:
+                    response[1] = 400
+                    response[0] = json.loads(channel_add_status[0])
     return response[0], response[1]
 
 # User Navigates to /ODAC/shows/api/od
