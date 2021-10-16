@@ -2,6 +2,29 @@ import sqlite3
 from database.API import db_actions
 import json
 
+class AllChannels():
+    def __init__(self):
+        self.DBActions = db_actions.DBOtherActions()
+
+    def GetAllChannels(self):
+        self.DBActions.cursor.execute('''
+            SELECT * from channels;
+        ''')
+        return self.objectify_channel_output(self.DBActions.cursor.fetchall())
+    
+    def objectify_channel_output(self, output):
+        print(output)
+        object_output = []
+        for object in output:
+            object_output.append({
+                "id": str(object[0]),
+                "name": object[1],
+                "type": object[2],
+                "number": str(object[3])
+            })
+        return object_output
+
+
 class SearchChannels():
     def __init__(self, channel):
         self.channel = channel

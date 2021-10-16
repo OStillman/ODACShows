@@ -5,6 +5,7 @@ from flask import Blueprint
 from API.on_demand import add_od
 from API.on_demand import get_od
 from API.on_demand import delete_od
+from API.on_demand import channels as api_channels
 
 api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 
@@ -14,9 +15,13 @@ def index():
 
 @api_endpoint_control.route('/channels', methods=['GET'])
 def channels():
+    #TODO: See Github for adding catch for only Live channel Retrieval
     response = ["", 200]
     if request.method == "GET":
-        response[0] = "Hello"
+        AllChannels =  api_channels.GetAllChannels()
+        retrieved_channels = AllChannels.Retrieve()
+        print(retrieved_channels)
+        response[0] = (retrieved_channels)
     return response[0], response[1]
 
 # User Navigates to /ODAC/shows/api/od
