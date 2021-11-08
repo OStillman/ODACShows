@@ -6,10 +6,16 @@ class AllChannels():
     def __init__(self):
         self.DBActions = db_actions.DBOtherActions()
 
-    def GetAllChannels(self):
-        self.DBActions.cursor.execute('''
-            SELECT * from channels;
-        ''')
+    def GetAllChannels(self, live_only=False):
+        if live_only:
+            self.DBActions.cursor.execute('''
+                SELECT * from channels
+                WHERE type = "Live";
+            ''')
+        else:
+            self.DBActions.cursor.execute('''
+                SELECT * from channels;
+            ''')
         return self.objectify_channel_output(self.DBActions.cursor.fetchall())
     
     def objectify_channel_output(self, output):

@@ -7,6 +7,8 @@ from API.on_demand import get_od
 from API.on_demand import delete_od
 from API.on_demand import channels as api_channels
 
+from API.live_shows import search_shows
+
 api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 
 @api_endpoint_control.route('/')
@@ -51,8 +53,31 @@ def channels():
 @api_endpoint_control.route('/live', methods=["GET", "POST", "DELETE"])
 def liveShows():
     response = ["", 200]
-
-    return response
+    if request.method == "POST":
+        print("Recieved post...")
+        incorrect_request_data = False
+        try:
+            request_data = request.get_json(force=True)
+        except:
+            incorrect_request_data = True
+            response[0] = {"Error" : {"Message": "No Show data supplied for searching"}}
+            response[1] = 400
+        finally:
+            if not incorrect_request_data:
+                print("Data has Passed, continue")
+                SearchShow = search_shows.SearchShow(request_data)
+                check_format = SearchShow.checkFormat()
+                if check_format == True:
+                    print("Checks Passed")
+                    show_search = SearchShow.searchShow()
+                    response[1] = show_search[0]
+                    response[0] = show_search[1]
+                else:
+                    response[0] = json.loads(check_format[0])
+                
+    else:
+        response[1] = 501
+    return response[0], response[1]
 
 # User Navigates to /ODAC/shows/api/od
 @api_endpoint_control.route('/od', methods=['GET', 'POST', 'DELETE'])
