@@ -34,8 +34,6 @@ class SearchShow():
             if not listing_details[0]:
                 failure = True
                 failure_msg = listing_details[1]
-            else:
-                listing = self.transformResponseData(listing_details[1])
         else:
             failure = True
             failure_msg = date[1]
@@ -43,7 +41,7 @@ class SearchShow():
         if failure:
             return [400, {"Error" : {"Message": failure_msg}}]
         else:
-            return [200, listing]
+            return [200, listing_details[1]]
 
     def transformDate(self, date):
         print(date)
@@ -67,7 +65,7 @@ class SearchShow():
         RequestShowings.createURL()
         output = RequestShowings.request()
         match_found = False
-        match_listing = None
+        match_listing = []
         #print(output[0]["event"])
         search_term = self.show_data["search_term"].lower()
         for listing in output[0]["event"]:
@@ -75,21 +73,25 @@ class SearchShow():
             if search_term in listing_name:
                 print("Match found")
                 match_found = True
-                match_listing = listing
+                match_listing.append(listing)
 
         if match_found:
             print(match_listing)
+            match_listing = self.transformResponseData(match_listing)
             return [True, match_listing]
         else:
             return [False, "No Listing Found"]
 
 
-    def transformResponseData(self, listing):
+    def transformResponseData(self, listings):
         # Output back to user - Show Name, Show Time
-        show_time = datetime.datetime.fromtimestamp(listing["startTime"])
-        show_date = show_time.strftime("%d/%m")
-        show_time = show_time.strftime("%H:%M")
-        response = {"success" : {"name": listing["name"], "show_time": show_time, "show_date": show_date, "svcId": listing["svcId"], "evtId": listing["evtId"]}}
+        response = {"success" : {"listings": []}}
+        formatted_listings = []
+        for listing in listings:
+            show_time = datetime.datetime.fromtimestamp(listing["startTime"])
+            show_date = show_time.strftime("%d/%m")
+            show_time = show_time.strftime("%H:%M")
+            response["success"]["listings"].append({"name": listing["name"], "show_time": show_time, "show_date": show_date, "svcId": listing["svcId"], "evtId": listing["evtId"]})
         return response
 
 
