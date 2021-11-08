@@ -49,10 +49,13 @@ class EpisodeNumber():
         ep_number = ep_number + 1
         is_numeric = True
         while is_numeric:
-            this_char = description[ep_number]
-            if this_char.isnumeric():
-                this_ep_number = this_ep_number + str(this_char)
+            if ep_number < len(description):
+                this_char = description[ep_number]
+                if this_char.isnumeric():
+                    this_ep_number = this_ep_number + str(this_char)
+                else:
+                    is_numeric = False
+                ep_number = ep_number + 1
             else:
                 is_numeric = False
-            ep_number = ep_number + 1
         return this_ep_number
