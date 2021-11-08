@@ -47,6 +47,13 @@ def channels():
                     response[0] = json.loads(channel_add_status[0])
     return response[0], response[1]
 
+
+@api_endpoint_control.route('/live', methods=["GET", "POST", "DELETE"])
+def liveShows():
+    response = ["", 200]
+
+    return response
+
 # User Navigates to /ODAC/shows/api/od
 @api_endpoint_control.route('/od', methods=['GET', 'POST', 'DELETE'])
 def on_demand():
