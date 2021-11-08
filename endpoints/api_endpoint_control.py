@@ -50,10 +50,10 @@ def channels():
     return response[0], response[1]
 
 
-@api_endpoint_control.route('/live', methods=["GET", "POST", "DELETE"])
+@api_endpoint_control.route('/live/search', methods=["GET"])
 def liveShows():
     response = ["", 200]
-    if request.method == "POST":
+    if request.method == "GET":
         print("Recieved post...")
         incorrect_request_data = False
         try:
