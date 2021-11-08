@@ -8,6 +8,7 @@ from API.on_demand import delete_od
 from API.on_demand import channels as api_channels
 
 from API.live_shows import search_shows
+from API.live_shows import add_show
 
 api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 
@@ -50,8 +51,40 @@ def channels():
     return response[0], response[1]
 
 
-@api_endpoint_control.route('/live/search', methods=["GET"])
+@api_endpoint_control.route('/live', methods=["GET", "POST", "DELETE"])
 def liveShows():
+    response = ["", 200]
+    if request.method == "POST":
+        incorrect_request_data = False
+        try:
+            request_data = request.get_json(force=True)
+        except:
+            incorrect_request_data = True
+            response[0] = {"Error" : {"Message": "No Show data supplied for Addition"}}
+            response[1] = 400
+        finally:
+            if not incorrect_request_data:
+                print("Data has passed, continue")
+                AddLiveShow = add_show.AddLiveShow(request_data)
+                validate_data = AddLiveShow.validate_show()
+                if validate_data == True:
+                    print("And it's been validated")
+                    process = AddLiveShow.processNewShow()
+                    if process[0] == False:
+                        response[0] = {"Error" : {"Message": process[1]}}
+                        response[1] = 400
+                    else:
+                        response[1] = 201
+                else:
+                    response[0] = json.loads(validate_data[0])
+                    response[1] = 400
+    else:
+        response[1] = 501
+    return response[0], response[1]
+
+
+@api_endpoint_control.route('/live/search', methods=["GET"])
+def liveShowsSearch():
     response = ["", 200]
     if request.method == "GET":
         print("Recieved post...")
