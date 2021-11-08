@@ -1,0 +1,14 @@
+INSERT INTO ODShows (
+    name,
+    service,
+    watching,
+    episode,
+    series
+)
+values (
+    "Test Show1",
+    1,
+    "N",
+    0,
+    0
+);
