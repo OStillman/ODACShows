@@ -1,5 +1,6 @@
 import sqlite3
 from database.API import db_actions
+from API.live_shows import all_channel_logos
 import json
 
 class AllChannels():
@@ -22,13 +23,25 @@ class AllChannels():
         print(output)
         object_output = []
         for object in output:
-            object_output.append({
+            this_channel = {
                 "id": str(object[0]),
                 "name": object[1],
                 "type": object[2],
-                "number": str(object[3])
-            })
+                "number": str(object[3]),
+                "logo_url": ""
+            }
+            this_channel = self.handleLogoUrl(this_channel)
+            object_output.append(this_channel)
         return object_output
+
+    def handleLogoUrl(self, this_channel):
+        if this_channel["type"] == "Live":
+            this_logo = "static/img/channel_logos/{}".format(this_channel["id"])
+            CheckLogoFormat = all_channel_logos.CheckLogoFormat(this_logo)
+            this_channel["logo_url"] = CheckLogoFormat.checkFormat()
+        else:
+            this_channel["logo_url"] = False
+        return this_channel
 
 
 class SearchChannels():
