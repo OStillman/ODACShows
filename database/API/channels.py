@@ -110,8 +110,9 @@ class AddChannels():
             return [False, channel_data]
         elif "rb" in this_channel_name:
             return [False, channel_data]
-        elif "london" in this_channel_name:
-            channel_data["channelName"].replace("London", "")
+        elif "bbc one london" in this_channel_name:
+            print("London found")
+            channel_data["channelName"] = "BBC ONE"
         return [True, channel_data]
 
     def commitAndClose(self):
