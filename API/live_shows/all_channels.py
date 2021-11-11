@@ -13,6 +13,7 @@ class ConfigureAllChannels():
         self.AllChannels = channels.AllChannels()
         self.AddChannels = channels.AddChannels(live=True)
         self.UpdateChannel = channels.UpdateChannel()
+        self.RemoveChannelLogos = all_channel_logos.RemoveChannelLogos()
         self.channels_added = []
 
     def processChannels(self):
@@ -23,6 +24,7 @@ class ConfigureAllChannels():
             main_details.append(self.channelMainDetails(channel))
         current_channels = self.getCurrentLiveChannels()
         if current_channels[0] == False:
+            self.RemoveChannelLogos.removeAllLogos()
             for channel in main_details:
                 self.addChannel(channel)
             self.AddChannels.commitAndClose()
