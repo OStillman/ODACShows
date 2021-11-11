@@ -61,8 +61,73 @@ class SearchChannels():
 
 
 class AddChannels():
-    def __init__(self, live_only = False):
-        self.live_only = live_only
+    def __init__(self, live = False):
+        self.live = live
         self.db_actions = db_actions.DBAdd()
 
-    
+    def insertChannel(self, channel_data):
+        channel_data = self.checkChannel(channel_data)
+        this_data = channel_data[1]
+        if channel_data[0] == True:
+            self.db_actions.cursor.execute('''
+            INSERT INTO channels (
+                name,
+                type,
+                number
+            )
+            values (
+                ?,
+                ?,
+                ?
+            );
+            ''', (this_data["channelName"], "Live", this_data["channelId"]))
+
+    def checkChannel(self, channel_data):
+        this_channel_name = channel_data["channelName"].lower()
+        if "freesat" in this_channel_name:
+            return [False, channel_data]
+        elif "radio" in this_channel_name:
+            return [False, channel_data]
+        elif "fm" in this_channel_name:
+            return [False, channel_data]
+        elif "rte" in this_channel_name:
+            return [False, channel_data]
+        elif "qvc" in this_channel_name:
+            return [False, channel_data]
+        elif "great!" in this_channel_name:
+            return [False, channel_data]
+        elif "s4c" in this_channel_name:
+            return [False, channel_data]
+        elif "jazeera" in this_channel_name:
+            return [False, channel_data]
+        elif "capital" in this_channel_name:
+            return [False, channel_data]
+        elif "heart" in this_channel_name:
+            return [False, channel_data]
+        elif "radio" in channel_data["description"].lower():
+            return [False, channel_data]
+        elif "wales" in this_channel_name:
+            return [False, channel_data]
+        elif "rb" in this_channel_name:
+            return [False, channel_data]
+        elif "london" in this_channel_name:
+            channel_data["channelName"].replace("London", "")
+        return [True, channel_data]
+
+    def commitAndClose(self):
+        self.db_actions.close_db()
+
+class UpdateChannel():
+    def __init__(self):
+        self.db_actions = db_actions.DBOtherActions()
+
+
+    def run_Update(self, channel_id, channel_new_number):
+        self.db_actions.cursor.execute('''
+        UPDATE channels 
+        SET number = ?
+        WHERE id = ?;
+        ''', (channel_new_number, channel_id))
+
+    def commitAndClose(self):
+        self.db_actions.close_db()
