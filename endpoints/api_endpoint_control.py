@@ -9,6 +9,7 @@ from API.on_demand import channels as api_channels
 
 from API.live_shows import search_shows
 from API.live_shows import add_show
+from API.live_shows import all_channels
 
 api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 
@@ -16,7 +17,7 @@ api_endpoint_control = Blueprint('api_endpoint_control', __name__)
 def index():
     return "ok"
 
-@api_endpoint_control.route('/channels', methods=['GET', 'POST'])
+@api_endpoint_control.route('/channels', methods=['GET', 'POST', "PATCH"])
 def channels():
     #TODO: See Github for adding catch for only Live channel Retrieval
     response = ["", 200]
@@ -48,6 +49,12 @@ def channels():
                 else:
                     response[1] = 400
                     response[0] = json.loads(channel_add_status[0])
+    elif request.method == "PATCH":
+        print("User requesting update of channels")
+        ConfigureAllChannels = all_channels.ConfigureAllChannels()
+        ConfigureAllChannels.processChannels()
+    else:
+        response[1] = 501
     return response[0], response[1]
 
 

@@ -58,3 +58,11 @@ class SearchChannels():
             "type": output[2],
             "number": str(output[3])
         })
+
+
+class AddChannels():
+    def __init__(self, live_only = False):
+        self.live_only = live_only
+        self.db_actions = db_actions.DBAdd()
+
+    
