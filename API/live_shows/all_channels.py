@@ -1,4 +1,5 @@
 from API.live_shows.freesat_api import all_channels as retrieve_channels
+from API.live_shows import all_channel_logos
 
 from database.API import channels
 
@@ -12,6 +13,7 @@ class ConfigureAllChannels():
         self.AllChannels = channels.AllChannels()
         self.AddChannels = channels.AddChannels(live=True)
         self.UpdateChannel = channels.UpdateChannel()
+        self.channels_added = []
 
     def processChannels(self):
         all_channels = self.RequestAllChannels.request()
@@ -36,6 +38,10 @@ class ConfigureAllChannels():
                     updates_required.append([channel["channelId"], comparison_outcome[2]])
             self.AddChannels.commitAndClose()
             self.runUpdates(updates_required)
+        #print(self.channels_added)
+        GetChannelLogos = all_channel_logos.GetChannelLogos(self.channels_added)
+        GetChannelLogos.retrieveLogos()
+        
 
     def channelMainDetails(self, channel):
         # Keeping the description as a comparison method - HD channels have the same description!
@@ -43,7 +49,9 @@ class ConfigureAllChannels():
             "channelId": channel["channelid"],
             "channelName": channel["channelname"],
             "location": channel["lcn"],
-            "description": channel["channeldescription"]
+            "description": channel["channeldescription"],
+            "logourl": channel["logourl"],
+            "row_id": ""
         }
         return details
 
@@ -93,7 +101,10 @@ class ConfigureAllChannels():
             return [True, current_channels]
 
     def addChannel(self, channel_details):
-        self.AddChannels.insertChannel(channel_details)
+        add_channel = self.AddChannels.insertChannel(channel_details)
+        if add_channel[0]:
+            channel_details["row_id"] = add_channel[1]
+            self.channels_added.append(channel_details)
 
     def runUpdates(self, updates):
         for update in updates:

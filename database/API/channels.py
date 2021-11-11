@@ -81,6 +81,9 @@ class AddChannels():
                 ?
             );
             ''', (this_data["channelName"], "Live", this_data["channelId"]))
+            return [True, self.db_actions.cursor.lastrowid]
+        else:
+            return [False]
 
     def checkChannel(self, channel_data):
         this_channel_name = channel_data["channelName"].lower()
@@ -111,7 +114,6 @@ class AddChannels():
         elif "rb" in this_channel_name:
             return [False, channel_data]
         elif "bbc one london" in this_channel_name:
-            print("London found")
             channel_data["channelName"] = "BBC ONE"
         return [True, channel_data]
 
